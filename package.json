@@ -14,7 +14,9 @@
     "parse": "~1.8.0",
     "parse-dashboard": "^1.0.14",
     "parse-server": "~2.2.12",
-    "sendgrid": "^3.0.5"
+    "parse-server-sendgrid-adapter": "^1.0.0",
+    "sendgrid": "^3.0.5",
+    "stripe": "^4.7.0"
   },
   "scripts": {
     "start": "node index.js"
