@@ -111,11 +111,11 @@ Parse.Cloud.define('requestMail', function(req, res) {
     request.method = 'POST'
     request.path = '/v3/mail/send'
     request.body = requestBody
-    sg.API(request, function(err, response) {
-        if (err) {
-            return res.error('Error sending email via SendGrid');
+    sg.API(request, function(response) {
+        if (response) {
+            return res.success(response);
         }
-        res.success(response);
+        return res.error('Error sending email via SendGrid');
     });
 });
 
