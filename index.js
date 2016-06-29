@@ -12,7 +12,7 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-    databaseURI: databaseUri || 'mongodb://localhost:27017/GearPass',
+    databaseURI: databaseUri || 'mongodb://localhost:27017/gearpass',
     cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
     appId: process.env.APP_ID || '3fb0ee849bd515e37bd07f69771f5d47',
     masterKey: process.env.MASTER_KEY || '662f22623934b6da38c191f1506d96cf', //Add your master key here. Keep it secret!
