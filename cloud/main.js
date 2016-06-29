@@ -64,31 +64,32 @@ Parse.Cloud.define('generateMembershipNumber', function(req, res) {
 
 Parse.Cloud.define('requestMail', function(req, res) {
 
-    // var currentUser = req.user;
-    // var data = req.params;
-    // console.log(data.email);
+    var currentUser = req.user;
+    var data = req.params;
+    console.log(data.email);
 
-    // // console.log(memberNumber);
-    // // currentUser.set('membership_number', memberNumber); // figure out a way to generate a random membership number
+    // console.log(memberNumber);
+    // currentUser.set('membership_number', memberNumber); // figure out a way to generate a random membership number
 
-    // var helper = require('sendgrid').mail
-    // from_email = new helper.Email("noreply@gearpass.com")
-    // to_email = new helper.Email(currentUser.get('email'))
-    // subject = "Gear Request"
-    // content = new helper.Content("text/plain", "Thank you for requesting " + data.quantity + " " + data.gear + " your request will be answered shortly")
-    // mail = new helper.Mail(from_email, subject, to_email, content)
+    var helper = require('sendgrid').mail
+    from_email = new helper.Email("noreply@gearpass.com")
+    to_email = new helper.Email(currentUser.get('email'))
+    subject = "Gear Request"
+    content = new helper.Content("text/plain", "Thank you for requesting " + data.quantity + " " + data.gear + " your request will be answered shortly")
+    mail = new helper.Mail(from_email, subject, to_email, content)
 
-    // var sg = require('sendgrid').SendGrid(API_KEY)
-    // var requestBody = mail.toJSON()
-    // var request = sg.emptyRequest()
-    // request.method = 'POST'
-    // request.path = '/v3/mail/send'
-    // request.body = requestBody
-    // sg.API(request, function(response) {
-    //     console.log(response.statusCode)
-    //     console.log(response.body)
-    //     console.log(response.headers)
-    // })
+    var sg = require('sendgrid').SendGrid(API_KEY)
+    var requestBody = mail.toJSON()
+    var request = sg.emptyRequest()
+    request.method = 'POST'
+    request.path = '/v3/mail/send'
+    request.body = requestBody
+    sg.API(request, function(response) {
+        if (response) {
+            return res.success(response);
+        }
+        return res.error('Error sending email via SendGrid');
+    });
 
 
     var currentUser = req.user;
