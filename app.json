@@ -20,6 +20,7 @@
     "SERVER_URL": {
       "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
       "value": "https://shielded-escarpment-82919.herokuapp.com/parse"
+      // "value": "http://localhost:1337/parse"
     }
   },
   "image": "heroku/nodejs",
