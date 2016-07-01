@@ -12,12 +12,12 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-    databaseURI: databaseUri || 'mongodb://localhost:27017/gearpass',
+    databaseURI: databaseUri || 'mongodb://localhost:27017/GearPass',
     cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
     appId: process.env.APP_ID || '3fb0ee849bd515e37bd07f69771f5d47',
     masterKey: process.env.MASTER_KEY || '662f22623934b6da38c191f1506d96cf', //Add your master key here. Keep it secret!
-    serverURL: process.env.SERVER_URL || 'https://shielded-escarpment-82919.herokuapp.com/parse', // Don't forget to change to https if needed
-    //serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse', // Don't forget to change to https if needed
+    // serverURL: process.env.SERVER_URL || 'https://shielded-escarpment-82919.herokuapp.com/parse', // Don't forget to change to https if needed
+    serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse', // Don't forget to change to https if needed
     liveQuery: {
         classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
     },
@@ -30,8 +30,8 @@ var api = new ParseServer({
 
 var dashboard = new ParseDashboard({
     "apps": [{
-        "serverURL": process.env.SERVER_URL || 'https://shielded-escarpment-82919.herokuapp.com/parse',
-        // "serverURL": process.env.SERVER_URL || 'http://localhost:1337/parse',
+        // "serverURL": process.env.SERVER_URL || 'https://shielded-escarpment-82919.herokuapp.com/parse',
+        "serverURL": process.env.SERVER_URL || 'http://localhost:1337/parse',
         "appId": process.env.APP_ID || '3fb0ee849bd515e37bd07f69771f5d47',
         "masterKey": process.env.MASTER_KEY || '662f22623934b6da38c191f1506d96cf',
         "appName": "GearPass"

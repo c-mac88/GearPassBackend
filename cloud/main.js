@@ -40,21 +40,48 @@ Parse.Cloud.define('generateMembershipNumber', function(req, res) {
         }
     );
 
-
-    var helper = require('sendgrid').mail
-    from_email = new helper.Email("noreply@gearpass.com")
-    to_email = new helper.Email(currentUser.get('email'))
-    subject = "GearPass Membership"
-    content = new helper.Content("text/plain", "Here is your new membership number for GearPass: " + currentUser.get('membership_number'))
-    mail = new helper.Mail(from_email, subject, to_email, content)
-    template
-
     var sg = require('sendgrid').SendGrid(API_KEY)
-    var requestBody = mail.toJSON()
     var request = sg.emptyRequest()
+    request.body = {
+
+        "content": [{
+            "type": "text/html",
+            "value": ""
+        }],
+        "from": {
+            "email": "noreply@gearpass.com",
+            "name": "Gear Pass"
+        },
+        "personalizations": [{
+            // "bcc": [{
+            //     "email": "sam.doe@example.com",
+            //     "name": "Sam Doe"
+            // }],
+            // "cc": [{
+            //     "email": "",
+            //     "name": ""
+            // }],
+            // "custom_args": {
+            //     "New Argument 1": "New Value 1",
+            //     "activationAttempt": "1",
+            //     "customerAccountNumber": "[CUSTOMER ACCOUNT NUMBER GOES HERE]"
+            // },
+            "subject": "Gear Pass Membership",
+            "substitutions": {
+                "%firstname%": currentUser.get('first'),
+                "%membernumber%": currentUser.get('membership_number'),
+            },
+            "to": [{
+                "email": currentUser.get('email'),
+                "name": currentUser.get('first')
+            }]
+        }],
+        "subject": "Gear Pass Membership",
+        "template_id": "ba2f734f-35e8-40dc-a6fe-fa34ae6b5c1f",
+
+    }
     request.method = 'POST'
     request.path = '/v3/mail/send'
-    request.body = requestBody
     sg.API(request, function(response) {
         console.log(response.statusCode)
         console.log(response.body)
@@ -68,56 +95,55 @@ Parse.Cloud.define('requestMail', function(req, res) {
     var data = req.params;
     console.log(data.email);
 
-    // console.log(memberNumber);
-    // currentUser.set('membership_number', memberNumber); // figure out a way to generate a random membership number
-
-    var helper = require('sendgrid').mail
-    from_email = new helper.Email("noreply@gearpass.com")
-    to_email = new helper.Email(currentUser.get('email'))
-    subject = "Gear Request"
-    content = new helper.Content("text/plain", "Thank you for requesting " + data.quantity + " " + data.gear + " your request will be answered shortly")
-    mail = new helper.Mail(from_email, subject, to_email, content)
-
     var sg = require('sendgrid').SendGrid(API_KEY)
-    var requestBody = mail.toJSON()
     var request = sg.emptyRequest()
+    request.body = {
+
+        "content": [{
+            "type": "text/html",
+            "value": ""
+        }],
+        "from": {
+            "email": " noreply@gearpass.com",
+            "name": "Gear Pass Requests"
+        },
+        "personalizations": [{
+            // "bcc": [{
+            //     "email": "",
+            //     "name": ""
+            // }],
+            // "cc": [{
+            //     "email": "",
+            //     "name": ""
+            // }],
+            // "custom_args": {
+            //     "New Argument 1": "New Value 1",
+            //     "activationAttempt": "1",
+            //     "customerAccountNumber": "[CUSTOMER ACCOUNT NUMBER GOES HERE]"
+            // },
+            "subject": "Gear Pass Request",
+            "substitutions": {
+                "%firstname%": currentUser.get('first'),
+                "%message%": data.message,
+                "%gear%": data.gear,
+                "%shopname%": data.name
+            },
+            "to": [{
+                "email": currentUser.get('email'),
+                "name": currentUser.get('first')
+            }]
+        }],
+        "subject": "New Request",
+        "template_id": "b6cbbc48-9e3c-4e6d-9b59-c42e3e88953c",
+    }
     request.method = 'POST'
     request.path = '/v3/mail/send'
-    request.body = requestBody
     sg.API(request, function(response) {
-        if (response) {
-            return res.success(response);
-        }
-        return res.error('Error sending email via SendGrid');
-    });
+        console.log(response.statusCode)
+        console.log(response.body)
+        console.log(response.headers)
+    })
 
-
-    var currentUser = req.user;
-    var data = req.params;
-    console.log(data.name);
-
-    console.log(memberNumber);
-    currentUser.set('membership_number', memberNumber); // figure out a way to generate a random membership number
-
-    var helper = require('sendgrid').mail
-    from_email = new helper.Email("noreply@gearpass.com")
-    to_email = new helper.Email(data.email)
-    subject = "Shop Request"
-    content = new helper.Content("text/plain", currentUser.get('First') + "Requested " + data.quantity + " " + data.gear + ". Please reply.")
-    mail = new helper.Mail(from_email, subject, to_email, content)
-
-    var sg = require('sendgrid').SendGrid(API_KEY)
-    var requestBody = mail.toJSON()
-    var request = sg.emptyRequest()
-    request.method = 'POST'
-    request.path = '/v3/mail/send'
-    request.body = requestBody
-    sg.API(request, function(response) {
-        if (response) {
-            return res.success(response);
-        }
-        return res.error('Error sending email via SendGrid');
-    });
 });
 
 
