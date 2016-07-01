@@ -66,6 +66,10 @@ Parse.Cloud.define('generateMembershipNumber', function(req, res) {
             //     "activationAttempt": "1",
             //     "customerAccountNumber": "[CUSTOMER ACCOUNT NUMBER GOES HERE]"
             // },
+            "headers": {
+                "X-Accept-Language": "en",
+                "X-Mailer": "MyApp"
+            },
             "subject": "Gear Pass Membership",
             "substitutions": {
                 "%firstname%": currentUser.get('first'),
@@ -121,6 +125,10 @@ Parse.Cloud.define('requestMail', function(req, res) {
             //     "activationAttempt": "1",
             //     "customerAccountNumber": "[CUSTOMER ACCOUNT NUMBER GOES HERE]"
             // },
+            "headers": {
+                "X-Accept-Language": "en",
+                "X-Mailer": "MyApp"
+            },
             "subject": "Gear Pass Request",
             "substitutions": {
                 "%firstname%": currentUser.get('first'),
