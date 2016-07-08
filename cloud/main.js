@@ -46,7 +46,7 @@ Parse.Cloud.define('generateMembershipNumber', function(req, res) {
 
         "content": [{
             "type": "text/html",
-            "value": ""
+            "value": "test"
         }],
         "from": {
             "email": "noreply@gearpass.com",
@@ -105,7 +105,7 @@ Parse.Cloud.define('requestMail', function(req, res) {
 
         "content": [{
             "type": "text/html",
-            "value": ""
+            "value": "test"
         }],
         "from": {
             "email": " noreply@gearpass.com",
