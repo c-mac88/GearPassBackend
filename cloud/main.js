@@ -97,7 +97,6 @@ Parse.Cloud.define('requestMail', function(req, res) {
 
     var currentUser = req.user;
     var data = req.params;
-    console.log(data.email);
 
     var sg = require('sendgrid').SendGrid(API_KEY)
     var request = sg.emptyRequest()
@@ -108,8 +107,8 @@ Parse.Cloud.define('requestMail', function(req, res) {
             "value": "test"
         }],
         "from": {
-            "email": " noreply@gearpass.com",
-            "name": "Gear Pass Requests"
+            "email": " noreply@adventurepass.com",
+            "name": "Adventure Pass"
         },
         "personalizations": [{
             // "bcc": [{
@@ -129,19 +128,16 @@ Parse.Cloud.define('requestMail', function(req, res) {
                 "X-Accept-Language": "en",
                 "X-Mailer": "MyApp"
             },
-            "subject": "Gear Pass Request",
+            "subject": "Welcome to Adventure Pass!",
             "substitutions": {
-                "%firstname%": currentUser.get('first'),
-                "%message%": data.message,
-                "%gear%": data.gear,
-                "%shopname%": data.name
+                "%firstname%": data.first
             },
             "to": [{
-                "email": currentUser.get('email'),
-                "name": currentUser.get('first')
+                "email": data.email,
+                "name": data.first
             }]
         }],
-        "subject": "New Request",
+        "subject": "Welcome to Adventure Pass!",
         "template_id": "b6cbbc48-9e3c-4e6d-9b59-c42e3e88953c",
     }
     request.method = 'POST'
