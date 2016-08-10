@@ -4,10 +4,10 @@ var tokenId;
 
 var memberNumber;
 
+//generate member number based on number of current users
 var users = new Parse.Query('User');
 users.count({
     success: function(response) {
-
         if (response < 10) {
             memberNumber = "00000" + response;
         } else if (response < 100) {
@@ -23,12 +23,13 @@ users.count({
     }
 });
 
+//Extend current user in DB to include new member number, send confirmation email
 Parse.Cloud.define('generateMembershipNumber', function(req, res) {
 
     var currentUser = req.user;
 
     console.log(memberNumber);
-    currentUser.set('membership_number', memberNumber); // figure out a way to generate a random membership number
+    currentUser.set('membership_number', memberNumber);
 
     Parse.Object.saveAll([currentUser], { useMasterKey: true }).then(
         function(response) {
@@ -53,19 +54,6 @@ Parse.Cloud.define('generateMembershipNumber', function(req, res) {
             "name": "Gear Pass"
         },
         "personalizations": [{
-            // "bcc": [{
-            //     "email": "sam.doe@example.com",
-            //     "name": "Sam Doe"
-            // }],
-            // "cc": [{
-            //     "email": "",
-            //     "name": ""
-            // }],
-            // "custom_args": {
-            //     "New Argument 1": "New Value 1",
-            //     "activationAttempt": "1",
-            //     "customerAccountNumber": "[CUSTOMER ACCOUNT NUMBER GOES HERE]"
-            // },
             "headers": {
                 "X-Accept-Language": "en",
                 "X-Mailer": "MyApp"
@@ -93,6 +81,7 @@ Parse.Cloud.define('generateMembershipNumber', function(req, res) {
     })
 });
 
+//email sent to users when they submit a rental request
 Parse.Cloud.define('requestMail', function(req, res) {
 
     var currentUser = req.user;
@@ -111,19 +100,6 @@ Parse.Cloud.define('requestMail', function(req, res) {
             "name": "Adventure Pass"
         },
         "personalizations": [{
-            // "bcc": [{
-            //     "email": "",
-            //     "name": ""
-            // }],
-            // "cc": [{
-            //     "email": "",
-            //     "name": ""
-            // }],
-            // "custom_args": {
-            //     "New Argument 1": "New Value 1",
-            //     "activationAttempt": "1",
-            //     "customerAccountNumber": "[CUSTOMER ACCOUNT NUMBER GOES HERE]"
-            // },
             "headers": {
                 "X-Accept-Language": "en",
                 "X-Mailer": "MyApp"
@@ -150,7 +126,7 @@ Parse.Cloud.define('requestMail', function(req, res) {
 
 });
 
-
+//get the Stripe token for user's credit card info, ceate new customer
 Parse.Cloud.define('collectPaymentInformation', function(req, res) {
 
     var stripe = require("stripe")("pk_test_qVOqOhnaihK12calHXo8wgQM");
